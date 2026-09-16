@@ -1,0 +1,16 @@
+CREATE TABLE accounts(id uuid PRIMARY KEY,email text UNIQUE NOT NULL,name text NOT NULL,organization text NOT NULL DEFAULT '',verified boolean NOT NULL DEFAULT false,role text NOT NULL DEFAULT 'client' CHECK(role IN ('client','partner','sales','legal','admin')),created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE sessions(hash text PRIMARY KEY,user_id uuid NOT NULL REFERENCES accounts(id),expires_at timestamptz NOT NULL);
+CREATE TABLE login_tokens(hash text PRIMARY KEY,user_id uuid NOT NULL REFERENCES accounts(id),expires_at timestamptz NOT NULL);
+CREATE TABLE limits(key text PRIMARY KEY,count integer NOT NULL,expires_at timestamptz NOT NULL);
+CREATE TABLE cases(id uuid PRIMARY KEY,number bigint GENERATED ALWAYS AS IDENTITY UNIQUE,owner_id uuid NOT NULL REFERENCES accounts(id),assignee_id uuid REFERENCES accounts(id),service text NOT NULL CHECK(service IN ('scan','trademark','bridge')),name text NOT NULL,mark_type text NOT NULL CHECK(mark_type IN ('text','image','combined')),activity text NOT NULL,classes integer[] NOT NULL DEFAULT '{}',details jsonb NOT NULL DEFAULT '{}',status text NOT NULL DEFAULT 'new',version integer NOT NULL DEFAULT 1,filing_number text,created_at timestamptz NOT NULL DEFAULT now(),updated_at timestamptz NOT NULL DEFAULT now());
+CREATE INDEX cases_owner ON cases(owner_id,updated_at DESC);
+CREATE INDEX cases_assignee ON cases(assignee_id,status);
+CREATE TABLE documents(id uuid PRIMARY KEY,case_id uuid NOT NULL REFERENCES cases(id),author_id uuid NOT NULL REFERENCES accounts(id),name text NOT NULL,mime text NOT NULL,bytes bytea NOT NULL CHECK(octet_length(bytes)<=3145728),kind text NOT NULL,internal boolean NOT NULL DEFAULT false,created_at timestamptz NOT NULL DEFAULT now());
+CREATE INDEX documents_case ON documents(case_id);
+CREATE TABLE messages(id uuid PRIMARY KEY,case_id uuid NOT NULL REFERENCES cases(id),author_id uuid NOT NULL REFERENCES accounts(id),body text NOT NULL,internal boolean NOT NULL DEFAULT false,created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE tasks(id uuid PRIMARY KEY,case_id uuid NOT NULL REFERENCES cases(id),title text NOT NULL,due_at timestamptz,done boolean NOT NULL DEFAULT false,created_at timestamptz NOT NULL DEFAULT now());
+CREATE INDEX tasks_due ON tasks(due_at) WHERE done=false;
+CREATE TABLE audit_events(id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,actor_id uuid REFERENCES accounts(id),case_id uuid REFERENCES cases(id),action text NOT NULL,details jsonb NOT NULL DEFAULT '{}',created_at timestamptz NOT NULL DEFAULT now());
+CREATE INDEX events_case ON audit_events(case_id,id);
+CREATE TABLE notifications(id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,user_id uuid NOT NULL REFERENCES accounts(id),case_id uuid REFERENCES cases(id),body text NOT NULL,read_at timestamptz,created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE ledger(id uuid PRIMARY KEY,user_id uuid NOT NULL REFERENCES accounts(id),case_id uuid REFERENCES cases(id),amount_tenge bigint NOT NULL,tokens integer NOT NULL DEFAULT 0,kind text NOT NULL,external_ref text UNIQUE NOT NULL,created_at timestamptz NOT NULL DEFAULT now());

@@ -1,0 +1,3 @@
+import {db,tx,audit} from '../lib/database.mjs';
+const [email,role]=process.argv.slice(2);if(!email||!['admin','sales','legal','partner','client'].includes(role))throw Error('Usage: npm run staff:grant -- email role');
+await tx(async c=>{const r=await c.query('UPDATE accounts SET role=$1 WHERE email=$2 AND verified=true RETURNING id',[role,email.toLowerCase()]);if(!r.rowCount)throw Error('Verified account not found');await audit(c,null,null,'role.changed',{user_id:r.rows[0].id,role});await c.query('DELETE FROM sessions WHERE user_id=$1',[r.rows[0].id]);});await db().end();console.log('Role set; sessions revoked');

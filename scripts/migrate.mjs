@@ -1,0 +1,2 @@
+import {readFile} from 'node:fs/promises';import {db,tx} from '../lib/database.mjs';
+await tx(async c=>{await c.query('SELECT pg_advisory_xact_lock(78219410)');await c.query('CREATE TABLE IF NOT EXISTS migrations(name text PRIMARY KEY,applied_at timestamptz DEFAULT now())');if(!(await c.query("SELECT 1 FROM migrations WHERE name='001_core'")).rowCount){await c.query(await readFile(new URL('../db/001_core.sql',import.meta.url),'utf8'));await c.query("INSERT INTO migrations(name) VALUES('001_core')");}});await db().end();console.log('Migration complete');
