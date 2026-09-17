@@ -1,0 +1,53 @@
+/* NUQTE targeted fixes: QuickCheck tabs */
+.check-card .check-tabs[data-slot="tabs-list"]{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  width:100%!important;
+  height:58px!important;
+  margin:24px 0 16px!important;
+  padding:5px!important;
+  gap:5px!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:#f1f2f5!important;
+  overflow:hidden!important;
+}
+.check-card .check-tabs [data-slot="tabs-trigger"]{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  min-width:0!important;
+  width:100%!important;
+  height:48px!important;
+  padding:0 16px!important;
+  margin:0!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:10px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#7583a2!important;
+  font:500 16px/1 Arial,Helvetica,sans-serif!important;
+  white-space:nowrap!important;
+}
+.check-card .check-tabs [data-slot="tabs-trigger"] svg{
+  display:block!important;
+  width:17px!important;
+  height:17px!important;
+  stroke-width:1.8!important;
+}
+.check-card .check-tabs [data-slot="tabs-trigger"][data-state="active"]{
+  background:#fff!important;
+  color:#111!important;
+  box-shadow:0 3px 10px rgba(17,17,17,.08)!important;
+}
+.check-card [data-slot="tabs-content"]{margin-top:0!important;outline:0!important}
+.check-card .type-help,.check-card [class*="type-help"]{margin:0 0 24px!important}
+.check-card .field-label{margin-top:0!important}
+@media(max-width:640px){
+  .check-card .check-tabs [data-slot="tabs-trigger"]{font-size:14px!important;padding:0 8px!important;gap:5px!important}
+  .check-card .check-tabs [data-slot="tabs-trigger"] svg{width:15px!important;height:15px!important}
+}
