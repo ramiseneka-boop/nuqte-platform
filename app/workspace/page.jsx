@@ -1,1 +1,1 @@
-import {redirect} from 'next/navigation';export default function Page(){redirect('/admin/leads');}\n
+import {redirect} from 'next/navigation';export default function Page(){redirect('/admin/leads');}
