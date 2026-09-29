@@ -1,6 +1,6 @@
 import {NextResponse} from 'next/server';
 import {db} from '@/lib/database.mjs';
-import {ensureLeadSchema,adminRequest,LEAD_STATUSES,LEAD_SERVICES,LEAD_SOURCES,clean} from '@/lib/leads.mjs';
+import {ensureLeadSchema,adminRequest,LEAD_STATUSES,LEAD_SERVICES,LEAD_SOURCES,clean,sameOrigin} from '@/lib/leads.mjs';
 export const runtime='nodejs';export const dynamic='force-dynamic';
 const json=(x,s=200)=>NextResponse.json(x,{status:s,headers:{'Cache-Control':'no-store'}});
 function filters(p){
@@ -30,6 +30,7 @@ export async function GET(req){try{
  return json({leads:r.rows});
  }catch(e){console.error('NUQTE admin error',e.code||e.name);return json({error:'Не удалось загрузить заявки.'},500);}}
 export async function POST(req){try{
+ if(!sameOrigin(req))return json({error:'Forbidden'},403);
  if(!adminRequest(req))return json({error:'Unauthorized'},401);await ensureLeadSchema();const b=await req.json();
  const id=clean(b.id,40),status=clean(b.status,30);if(!id||!LEAD_STATUSES.includes(status))return json({error:'Некорректные данные.'},400);
  const r=await db().query('UPDATE leads SET status=$1,updated_at=now() WHERE public_id=$2 RETURNING public_id,status',[status,id]);if(!r.rowCount)return json({error:'Заявка не найдена.'},404);return json({ok:true,lead:r.rows[0]});
