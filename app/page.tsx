@@ -1,2 +1,1 @@
-import Nuqte from "./nuqte";
-export default function Page() { return <Nuqte view="home" />; }
+import {redirect} from 'next/navigation';export default function Page(){redirect('/ru');}
