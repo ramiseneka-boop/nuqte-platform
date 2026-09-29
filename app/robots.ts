@@ -1,0 +1,1 @@
+import type {MetadataRoute} from 'next';export default function robots():MetadataRoute.Robots{return{rules:{userAgent:'*',allow:['/ru/','/kz/'],disallow:['/admin/','/workspace','/cabinet','/login','/check','/order','/api/']},sitemap:'https://nuqte-platform-i28p.vercel.app/sitemap.xml'};}
