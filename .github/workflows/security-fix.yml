@@ -1,0 +1,34 @@
+name: Apply production dependency security fixes
+on:
+  push:
+    branches: [nuqte-1.0]
+    paths: [.github/workflows/security-fix.yml]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: nuqte-1.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Update patched framework and compatible production dependencies
+        run: |
+          npm install next@16.3.6 --save-exact
+          npm audit fix --omit=dev || true
+      - run: npm test
+      - run: npm run build
+      - name: Commit lockfile security update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Update production dependencies for security"
+          git push origin HEAD:nuqte-1.0
