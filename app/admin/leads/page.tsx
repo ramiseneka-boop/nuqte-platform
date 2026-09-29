@@ -1,0 +1,3 @@
+import {cookies} from 'next/headers';import {redirect} from 'next/navigation';import {adminConfigured,adminCookieStore} from '@/lib/leads.mjs';import AdminLeads from './AdminLeads';import styles from '../admin.module.css';
+export const dynamic='force-dynamic';
+export default async function LeadsPage(){if(!adminConfigured())return <main className={styles.config}><h1>Админка NUQTE не настроена</h1><p>Добавьте в Vercel переменные <code>NUQTE_ADMIN_PASSWORD</code> и <code>AUTH_PEPPER</code>, затем откройте страницу снова.</p><a href="/ru">← На сайт</a></main>;const c=await cookies();if(!adminCookieStore(c))redirect('/admin/login');return <AdminLeads/>}
