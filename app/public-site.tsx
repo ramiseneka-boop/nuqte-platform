@@ -57,7 +57,7 @@ function formatPhoneInput(v:string){const raw=v.trim();if(raw&&!raw.startsWith('
 
 export default function PublicSite({lang,slug}:{lang:Lang;slug:string[]}){
  const path=slug.join('/');const [menu,setMenu]=useState(false);
- useEffect(()=>{try{localStorage.setItem('nuqte-lang',lang);document.cookie='nuqte_lang='+lang+'; path=/; max-age=31536000; samesite=lax'}catch{}},[lang]);
+ useEffect(()=>{try{localStorage.setItem('nuqte-lang',lang);document.cookie='nuqte_lang='+lang+'; path=/; max-age=31536000; samesite=lax';document.documentElement.lang=lang==='kz'?'kk':'ru'}catch{}},[lang]);
  const other:Lang=lang==='ru'?'kz':'ru';const otherHref=linkFor(other,path);
  return <div className="nv-site">
   <a className="nv-skip" href="#content">{tr(lang,'Перейти к содержимому','Мазмұнға өту')}</a>
