@@ -1,1 +1,1 @@
-import {redirect} from 'next/navigation';export default function Page(){redirect('/workspace?new=scan');}
+import {redirect} from 'next/navigation';export default function Page(){redirect('/ru');}\n
