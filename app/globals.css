@@ -300,3 +300,99 @@ h1,h2,h3{letter-spacing:-.045em;font-weight:500;text-wrap:balance}p{line-height:
   .faq-section>div:first-child{margin-bottom:22px}
   .faq-list [data-slot=accordion-trigger]{font-size:16px;min-height:64px}
 }
+
+/* 2026-10-08 visible polish v2: structural hero/FAQ fix */
+@media (min-width: 851px){
+  .hero-scene{
+    min-height:auto !important;
+    padding-bottom:215px !important;
+  }
+  .hero{
+    grid-template-columns:minmax(0,1fr) minmax(420px,.9fr) !important;
+    gap:44px !important;
+    align-items:center !important;
+    padding-top:34px !important;
+    padding-bottom:24px !important;
+  }
+  .hero-copy-panel{
+    max-width:690px;
+    padding:28px 30px 30px;
+    border:1px solid #ebe7e2;
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 16px 42px rgba(17,17,17,.08);
+  }
+  .hero-copy-panel .eyebrow{margin-bottom:8px}
+  .hero h1{
+    font-size:clamp(50px,4.65vw,72px) !important;
+    line-height:1.01 !important;
+    margin:14px 0 18px !important;
+  }
+  .hero-description{
+    max-width:520px !important;
+    padding:0 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    backdrop-filter:none !important;
+    font-size:19px !important;
+    line-height:1.45 !important;
+  }
+  .panorama-stage{
+    height:300px !important;
+  }
+}
+.dark-band .dark-cta{
+  display:inline-flex !important;
+  align-items:center;
+  gap:9px;
+  width:max-content;
+  min-height:50px;
+  padding:12px 18px;
+  border:1px solid #ff6b18 !important;
+  border-radius:8px;
+  background:#ff6b18 !important;
+  color:#141414 !important;
+  font-weight:700;
+}
+.dark-band .dark-cta:hover{
+  background:#fff !important;
+  border-color:#fff !important;
+  color:#141414 !important;
+}
+.faq-section{
+  display:block !important;
+  grid-template-columns:none !important;
+  gap:0 !important;
+}
+.faq-section>div:first-child{
+  max-width:none !important;
+  margin:0 0 22px !important;
+}
+.faq-section .faq-heading{
+  max-width:none !important;
+  margin:0 !important;
+  font-size:clamp(40px,4.3vw,62px) !important;
+  line-height:1.05 !important;
+}
+.faq-section .faq-list{
+  width:100% !important;
+  max-width:none !important;
+}
+@media (max-width:850px){
+  .hero-scene{
+    min-height:auto !important;
+    padding-bottom:145px !important;
+  }
+  .hero-copy-panel{
+    padding:20px 18px;
+    border:1px solid #ebe7e2;
+    border-radius:14px;
+    background:#fff;
+    box-shadow:0 12px 30px rgba(17,17,17,.07);
+  }
+  .hero h1{font-size:clamp(42px,11vw,56px) !important}
+  .panorama-stage{height:175px !important}
+  .faq-section .faq-heading{font-size:38px !important}
+}
